@@ -1,18 +1,13 @@
 <style>
-.jw-flag-floating .jw-wrapper {
- width:180px !important;
- height:320px !important;
- max-height:320px !important;
-}
 
 .jw-svg-icon-rewind {
-	display: none;
+  display: none;
 }
 .jw-icon-fullscreen {
-	display: none !important;
-}	
+  display: none !important;
+} 
 .jw-icon.jw-icon-inline.jw-button-color.jw-reset.jw-icon-pip {
-	display: none !important;
+  display: none !important;
 }
 
 </style>
@@ -21,10 +16,14 @@
 
 <script src="https://cdn.jwplayer.com/libraries/ItMW7Ep3.js"></script>
 <script>
+
+var gh = 320;
+var gw = 180;
+
 var playerInstance = jwplayer("player").setup({
   "file": "https://d2l8gjzronllm0.cloudfront.net/broadcast/hotsauce/vkhotsauce-8aa05321925e4cd3be11570795b0ead4/vods/da326977-989d-4ec8-a78f-489db5c12d40/hls/da326977-989d-4ec8-a78f-489db5c12d40_VOD.m3u8",
-  "height": 180,
-  "width": 320,
+  "height": gh,
+  "width": gw,
   "autostart": "true",
   "floating": { "dismissible": true }
 });
@@ -33,16 +32,42 @@ console.log(playerInstance.getConfig());
 
 playerInstance.on('ready', function(ev) {
 
-	console.log('ready');
+  console.log('ready');
 
-	document.getElementById(playerInstance.id).style.height = 0;
-	document.getElementById(playerInstance.id).style.width = 0;
-	
-	playerInstance.setFloating("true");
+  document.getElementById(playerInstance.id).style.height = 0;
+  document.getElementById(playerInstance.id).style.width = 0;
+  
+  playerInstance.setFloating("true");
 
-	console.log(playerInstance.getConfig());
+  console.log(playerInstance.getConfig());
 });
+  
+  
+playerInstance.on('fullscreen', function(ev) {
 
+  console.log('fullscreen');
+  if(ev.fullscreen)
+  {
+    jwplayer().getContainer().getElementsByClassName('jw-wrapper')[0].style.maxHeight = screen.height;
+    jwplayer().getContainer().getElementsByClassName('jw-wrapper')[0].style.height = screen.height;
+    jwplayer().getContainer().getElementsByClassName('jw-wrapper')[0].style.maxWidth = screen.width;
+    jwplayer().getContainer().getElementsByClassName('jw-wrapper')[0].style.width = screen.width;
+
+    console.log(jwplayer().getContainer().getElementsByClassName('jw-wrapper')[0].style);
+  }
+  else
+  {
+    jwplayer().getContainer().getElementsByClassName('jw-wrapper')[0].style.maxHeight = gh;
+    jwplayer().getContainer().getElementsByClassName('jw-wrapper')[0].style.height = gh;
+    jwplayer().getContainer().getElementsByClassName('jw-wrapper')[0].style.maxWidth = gw;
+    jwplayer().getContainer().getElementsByClassName('jw-wrapper')[0].style.width = gw;
+
+    console.log(jwplayer().getContainer().getElementsByClassName('jw-wrapper')[0].style);
+
+  }
+  console.log(ev);
+
+});
 
 
 
