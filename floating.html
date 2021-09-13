@@ -52,7 +52,7 @@ playerInstance.on('fullscreen', function(ev) {
     jwplayer().getContainer().getElementsByClassName('jw-wrapper')[0].style.height = screen.height;
     jwplayer().getContainer().getElementsByClassName('jw-wrapper')[0].style.maxWidth = screen.width;
     jwplayer().getContainer().getElementsByClassName('jw-wrapper')[0].style.width = screen.width;
-    
+    pastTransform = jwplayer().getContainer().getElementsByClassName('jw-wrapper')[0].style.transform;
     jwplayer().getContainer().getElementsByClassName('jw-wrapper')[0].style.transform = '';
 
     console.log(jwplayer().getContainer().getElementsByClassName('jw-wrapper')[0].style);
@@ -63,6 +63,8 @@ playerInstance.on('fullscreen', function(ev) {
     jwplayer().getContainer().getElementsByClassName('jw-wrapper')[0].style.height = gh;
     jwplayer().getContainer().getElementsByClassName('jw-wrapper')[0].style.maxWidth = gw;
     jwplayer().getContainer().getElementsByClassName('jw-wrapper')[0].style.width = gw;
+
+    jwplayer().getContainer().getElementsByClassName('jw-wrapper')[0].style.transform = pastTransform;
 
     console.log(jwplayer().getContainer().getElementsByClassName('jw-wrapper')[0].style);
 
