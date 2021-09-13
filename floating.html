@@ -52,6 +52,8 @@ playerInstance.on('fullscreen', function(ev) {
     jwplayer().getContainer().getElementsByClassName('jw-wrapper')[0].style.height = screen.height;
     jwplayer().getContainer().getElementsByClassName('jw-wrapper')[0].style.maxWidth = screen.width;
     jwplayer().getContainer().getElementsByClassName('jw-wrapper')[0].style.width = screen.width;
+    
+    jwplayer().getContainer().getElementsByClassName('jw-wrapper')[0].style.transform = '';
 
     console.log(jwplayer().getContainer().getElementsByClassName('jw-wrapper')[0].style);
   }
