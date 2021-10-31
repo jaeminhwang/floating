@@ -1,1 +1,105 @@
-<iframe src="https://player.sauceflex.com/broadcast/lklfmall-dc3a84f9a3a64344b65dbc64eb1b75f9?accessToken=ZXlKMGVYQWlPaUpLVjFRaUxDSmhiR2NpT2lKU1V6STFOaUo5LmV5Sm5aVzVrWlhJaU9pSmxJaXdpYm1samEwNWhiV1VpT2lKcVpXMXBLaW9xSWl3aWNHRnlkRzVsY2tsa0lqb2liR1p0WVd4c0lpd2liV1Z0WW1WeVZIbHdaU0k2SWpFaUxDSmhaMlVpT2lJME1DSXNJbTFsYldKbGNrbGtJam9pTlRjeU9USTBNVGNpTENKbGVIQWlPakUyTXpVM01EUTROVFVzSW1saGRDSTZNVFl6TlRZNU56WTFOWDAuaWtPcDMtSDRwaWxTckREY3pHSUhxZEhrQmlLdmpVVDA2ejc1YWxtWXVSb2d4WlB2eGVaZEo0RFVfVzNXUEFWMW44LU1kdVczWnE3c1NDVnNzR244dE9WMDg2cXJIczdyQ2ZLWE0yazM2NHdCUVVoNHVySE1BUXlCUldkUXAxWnhNR2c0eFpNX0VTNjFwc0JQWF9mcmhOU1pxYnZyWDA3Z184NTAyOHNoeG1rdGo5c21NVjY0VXRnWUNPU1JlaGhrZU1wa200MnIzMEItV1lxVERUczlFQ3l1QkxzSy1HSDZubzBMQ1d6Z1dXaEY1M255eHhRUm9McG1DU1d3VVQwNTR2QzFpOHpkOEcwWEYzbzRlUnBEMXRRWTFpRzRkMWwxclYxcktMNnpxWHFvYzJYUE90OTJ6b1c0Um44VzVqQkw2RWVlUVNhay1ZNVZQVVpuSF9Pc3J3" frameborder="0" width="100%" height="100%" id="lfSauceLive" scrolling="no"></iframe>
+<head>
+
+<!-- 공통 css 및 js -->
+<script type="text/javascript" src="https://img.lfmall.co.kr/file/WAS/apps/2014/jscss/mobilefront/common/js/lib/jquery-1.7.1.min.js"></script>
+<script type="text/javascript" src="https://img.lfmall.co.kr/file/WAS/apps/2014/jscss/mobilefront/common/js/lib/jquery.cookie-1.4.1.js"></script>
+
+</head>
+<body>
+<script>
+
+       
+    function getLiveType(startDateStr){
+        var sliveType = "sche";
+        if(startDateStr){
+            try{
+                var liveStartDate = strToDate(startDateStr);
+                var timeDiff = liveStartDate.getTime() - new Date().getTime(); // 방송 시작까지 남은 시간
+                if(timeDiff <= 0){ // 방송 시작시간 경과 시 
+                    sliveType = "live";
+                }
+            }catch(e){
+                console.log(e.message);
+            }
+        }
+        return sliveType;
+    }
+    
+    //formatter : '20210711' | '2021-07-11' | '202107110611' | '2021-07-11 06:11'
+    function strToDate(dateStr){
+        var rtnDate = null;
+        var dateRegExp = "([0-9]{4})-?([0-9]{2})-?([0-9]{2})"; // ex) '2021-07-11' | 20210711
+        var timeRegExp = "([0-9]{2}):?([0-9]{2})"; // ex) '' | '06:11' | 0611
+        var dateFormatter = "^" + dateRegExp + "\\s*(?:" + timeRegExp + ")?$";
+        var dateList = new RegExp(dateFormatter).exec(dateStr);
+        if(dateList){
+            if(dateList.length > 2){ // month가 있으면
+                dateList[2] = dateList[2] - 1; // month - 1 
+            }
+            rtnDate = new (Function.bind.apply(Date, dateList)); // Date 생성자 호출
+        }
+        return rtnDate;
+    }
+    
+    function setLiveSource(type, url){
+        var loc = "";
+        if(type == "sche"){// 편성표 (라이브 방송 시작 전)
+            loc = url;
+            document.getElementById('lfSauceLive').setAttribute('src', loc);
+            //$('.eventPage .shareBar').hide();
+            $('.lf-sauce-frame').removeClass('live-sauce');
+            $('#contents').css({'margin-top':'44px'});
+            $('html, body').animate({scrollTop: '0'}, 680);
+        } else if(type == "live"){ // 라이브 방송 시작
+            loc = url + "?accessToken=ZXlKMGVYQWlPaUpLVjFRaUxDSmhiR2NpT2lKU1V6STFOaUo5LmV5Sm5aVzVrWlhJaU9pSmxJaXdpYm1samEwNWhiV1VpT2lKcVpXMXBLaW9xSWl3aWNHRnlkRzVsY2tsa0lqb2liR1p0WVd4c0lpd2liV1Z0WW1WeVZIbHdaU0k2SWpFaUxDSmhaMlVpT2lJME1DSXNJbTFsYldKbGNrbGtJam9pTlRjeU9USTBNVGNpTENKbGVIQWlPakUyTXpVM01EYzNPVFFzSW1saGRDSTZNVFl6TlRjd01EVTVOSDAuR2JOU3FaSnJRZWRjeTQ5RmRyMTBIc00wRVlDb3g2amZacjFMLWxHeVcxYmc2VVI1bXp0NnV2SDAzeHQtd05xamZJbDBpcFktZDhQeGRHZWhoUUY4dF9RczdTTDhGdW1BQ3Rwa1lQcE10UGVOUUVyaXBHaUtGX21pS2MtRWNydTVMMGN4R21kd2drVGlZZ0xVYjhncGROR0tYUUp2MUFGdDFPNWJSSnMwckx0OFcwRC11ZlYzZURHS2dPV1BtYnpMTXZjdFJIZEtmQjFmSWtQNzVQcHZMVDk5M1hqN3pXRVlTNGQ5akFkakdrbFhUd1dmVUh3dllkNHVYNUl2ZFgyNFNyZlR3WmdydUF0QXlVMWg2VzlBd2xuZk9WVXFxR0t2UURxWFdLdXhVVWxDak5ObW5RUHQyRmF0UEpkSzJERk5LN3VGOG1uZEd1aHBRRU1lNXY2anRB"; // 소스 플렉스 방송 url
+            document.getElementById('lfSauceLive').setAttribute('src', loc);
+            $("#wrap > div.event-share-bar-wrap").hide();
+            $('.lf-sauce-frame').addClass('live-sauce');
+            $('#contents').css({'margin-top':'45px'});
+            $('html, body').animate({scrollTop: '0'}, 680);
+        }
+    }
+    
+$(document).ready(function(){
+    // 1.sliveUrl : 소스플렉스 편성표 Live Id 입력
+	// 2.startDateStr : 라이프 시작 시간 ex) 'yyyy-MM-dd HH:mm'
+	// [Start] input 영역
+	var sliveUrl = "https://player.sauceflex.com/broadcast/lklfmall-dc3a84f9a3a64344b65dbc64eb1b75f9";
+	var startDateStr = "2021-10-27 11:00";
+	// [End] input 영역
+	executeLiveSource(500, 14);
+	function executeLiveSource(intervalTime, callCnt){
+		var setCallCnt = callCnt;
+		var sauceIntervalId = setInterval(function(){
+			setCallCnt--;
+			var callSuccess = false;
+			if($("#lfSauceLive").length > 0){
+				if($("#lfSauceLive").attr("src") == ""){
+					setLiveSource(getLiveType(startDateStr), sliveUrl);
+					setIntervalLive(startDateStr);
+					callSuccess = true;
+				}
+			}
+			if(callSuccess || setCallCnt <= 0){
+				clearInterval(sauceIntervalId);
+			}
+		}, intervalTime);
+	}
+	function setIntervalLive(startDateStr){
+		var liveStartDate = strToDate(startDateStr);
+		if((liveStartDate.getTime() - new Date().getTime()) > 0){
+			var intervalId = setInterval(function(){
+				if((liveStartDate.getTime() - new Date().getTime()) <= 0){ // 방송 시작시간 경과 시
+					clearInterval(intervalId);
+					setLiveSource("live", sliveUrl);
+				}
+			}, 1000);
+		}
+	}
+
+});
+</script>
+
+<div class="playerWrapper portrait"><iframe src="" frameborder="0" width="100%" height="100%" id="lfSauceLive" scrolling="no"></iframe></div>
+
+</body>
